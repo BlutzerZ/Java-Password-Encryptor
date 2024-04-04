@@ -22,14 +22,19 @@ dependencies {
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:31.1-jre'
+
+    implementation 'com.opencsv:opencsv:5.5.1'
+
+    implementation 'org.apache.commons:commons-csv:1.10.0'
+
 }
+
 
 application {
     // Define the main class for the application.
-    mainClass = 'pbogradleencryptor.App'
+    mainClass = 'com.blutzerz.uicsv.App'
 }
 
-tasks.named('test') {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
+run{
+    standardInput = System.in
 }

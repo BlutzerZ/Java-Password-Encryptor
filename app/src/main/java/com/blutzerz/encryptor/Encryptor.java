@@ -1,4 +1,4 @@
-package pbogradleencryptor;
+package com.blutzerz.encryptor;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;

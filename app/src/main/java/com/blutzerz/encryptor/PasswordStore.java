@@ -1,4 +1,4 @@
-package pbogradleencryptor;
+package com.blutzerz.encryptor;
 
 public class PasswordStore {
     public String name, username;
@@ -59,6 +59,22 @@ public class PasswordStore {
                 break;
         }
         return categoryName;
+    }
+
+    public String getHashKey() {
+        return this.hashkey;
+    }
+
+    public int getCategoryCode() {
+        return this.category;
+    }
+
+    public String getEncPassword() {
+        return this.password;
+    }
+
+    public double getScore() {
+        return this.score;
     }
 
     private void calculateScore(String plainPass) {
