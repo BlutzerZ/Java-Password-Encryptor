@@ -1,6 +1,6 @@
 package com.blutzerz.component;
 
-public class Space {
+public class Space implements Component {
     int width;
 
     public Space(int width) {

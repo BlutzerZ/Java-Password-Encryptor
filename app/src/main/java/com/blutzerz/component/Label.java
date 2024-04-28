@@ -1,6 +1,6 @@
 package com.blutzerz.component;
 
-public class Label {
+public class Label implements Component {
     int width;
     public String text;
 

@@ -1,69 +1,54 @@
 package com.blutzerz.page;
 
+import com.blutzerz.page.*;
+
+import java.util.ArrayList;
+
 import com.blutzerz.component.*;
+import com.blutzerz.data.DataPassword;
 
-public class MainPage {
-    public String title;
-    public int width;
-    private final HLine hline;
-    private final Space space;
-    private final Label label;
+public class MainPage extends BasePage {
+    SelectInput pageSelect;
 
-    public MainPage(String title, int width) {
-        this.width = width;
-        this.title = title;
-        this.hline = new HLine(width);
-        this.space = new Space(width);
-        this.label = new Label(title.toUpperCase(), width);
-    }
-
-    public void draw() throws Exception {
-        this.drawHeader();
-        this.space.draw();
-        this.drawContent();
-    }
-
-    public void drawHeader() {
-        this.hline.draw();
-        this.space.draw();
-        this.label.draw();
-        this.space.draw();
-        this.hline.draw();
-    }
-
-    private void drawContent() throws Exception {
+    public MainPage(int width) {
+        super("Aplikasi Penyimpanan Password", width);
+        this.components.add(new Label("Selamat datang di aplikasi Password Vault",
+                this.width));
+        this.components.add(new Label("Simpan password anda dengan aman di sini",
+                this.width));
+        this.components.add(new Space(this.width));
         String[] pages = { "Input Password", "Tampil Password", "Keluar Aplikasi" };
-        SelectInput pageSelect = new SelectInput("Pilih halaman berikut:",
+        this.pageSelect = new SelectInput("Pilih halaman berikut:",
                 pages, this.width);
+        this.components.add(pageSelect);
+    }
+
+    @Override
+    public void drawContent() {
         int select;
-        this.label.text = "Selamat datang di aplikasi Password Vault";
-        this.label.draw();
-        this.label.text = "Simpan password anda dengan aman di sini";
-        this.label.draw();
-        this.space.draw();
-        pageSelect.draw();
-        select = pageSelect.getValue() - 1;
+        for (Component widget : this.components) {
+            widget.draw();
+        }
+        select = this.pageSelect.getValue() - 1;
         switch (select) {
             case 0 -> {
                 drawFooter();
-                new InputPage("Inputan Password", this.width).draw();
+                new InputPage(this.width).draw();
             }
             case 1 -> {
                 drawFooter();
-                new ListPasswordPage("List Password Tersimpan", this.width).draw();
+                new ListPasswordPage(this.width).draw();
             }
             case 2 -> {
+                new Label("Menyimpan data ... ...", this.width).draw();
+                DataPassword.saveCSVData();
                 new Label("Terima kasih telah menggunakan aplikasi", this.width).draw();
                 drawFooter();
+                System.exit(0);
             }
             default -> {
-                new MainPage(this.title, this.width).draw();
+                new MainPage(this.width).draw();
             }
         }
-    }
-
-    public void drawFooter() {
-        this.space.draw();
-        this.hline.draw();
     }
 }

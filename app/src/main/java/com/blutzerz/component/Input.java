@@ -2,7 +2,7 @@ package com.blutzerz.component;
 
 import java.util.Scanner;
 
-public class Input {
+public class Input implements Component {
     String label;
     Scanner input = new Scanner(System.in);
     String value;

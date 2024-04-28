@@ -1,6 +1,6 @@
 package com.blutzerz.component;
 
-public class HLine {
+public class HLine implements Component {
     int width;
 
     public HLine(int width) {

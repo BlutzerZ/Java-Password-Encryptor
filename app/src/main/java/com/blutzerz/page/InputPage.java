@@ -4,53 +4,53 @@ import com.blutzerz.component.*;
 import com.blutzerz.data.*;
 import com.blutzerz.encryptor.PasswordStore;
 
-public class InputPage {
-    String label;
-    int width;
-    String nama;
-    String username;
-    String password;
-    int category;
+public class InputPage extends BasePage {
+    private Input nameInput;
+    private Input usernameInput;
+    private Input passwordInput;
+    private SelectInput catInput;
+    private PasswordStore passStr;
 
-    public InputPage(String label, int width) {
-        this.label = label;
-        this.width = width;
+    public InputPage(int width) {
+        super("Input Password", width);
     }
 
-    public void draw() throws Exception {
+    @Override
+    public void drawContent() {
         new HLine(this.width).draw();
         new Space(this.width).draw();
         new Label("Input Password", this.width).draw();
-        new Space(this.width).draw();
-        new HLine(this.width).draw();
 
         new Space(this.width).draw();
-        Input nama = new Input("Judul Password");
-        Input username = new Input("Username");
-        Input password = new Input("Password");
-        nama.draw();
-        this.nama = nama.getValue();
-        username.draw();
-        this.username = username.getValue();
-        password.draw();
-        this.password = password.getValue();
+
+        nameInput.draw();
+        this.nameInput = new Input("Judul Password");
+        usernameInput.draw();
+        this.usernameInput = new Input("Username");
+        passwordInput.draw();
+        this.passwordInput = new Input("Password");
 
         String[] pilihan = { "Belum terkategori", "Aplikasi Web", "Aplikasi Mobile", "Akun Lainnya" };
 
-        SelectInput pilSelect = new SelectInput(this.label, pilihan, this.width);
-        pilSelect.draw();
-        this.category = pilSelect.getValue();
+        SelectInput catInput = new SelectInput("Inputan Password", pilihan, this.width);
+        catInput.draw();
         new Space(this.width).draw();
         new HLine(this.width).draw();
 
-        PasswordStore passwordStore = new PasswordStore(this.nama, this.username, this.password, this.category);
-        DataPassword.passData.add(passwordStore);
-        DataPassword.saveCSVData();
+        try {
+            passStr = new PasswordStore(this.nameInput.getValue(), this.usernameInput.getValue(),
+                    this.passwordInput.getValue(), this.catInput.getValue());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DataPassword.passData.add(passStr);
+            DataPassword.saveCSVData();
 
-        new Label("----- -----", this.width);
-        new Label("Password berhasil disimpan", this.width).draw();
-        new Space(this.width).draw();
-        new HLine(this.width).draw();
-        new MainPage("Encrypted Password Store", this.width).draw();
+            new Label("----- -----", this.width);
+            new Label("Password berhasil disimpan", this.width).draw();
+            new Space(this.width).draw();
+            new HLine(this.width).draw();
+            new MainPage(this.width).draw();
+        }
     }
 }
