@@ -1,38 +1,72 @@
 package com.blutzerz.page;
 
+import com.blutzerz.component.Component;
 import com.blutzerz.component.HLine;
 import com.blutzerz.component.Label;
+import com.blutzerz.component.SelectInput;
 import com.blutzerz.component.Space;
 import com.blutzerz.data.DataPassword;
 import com.blutzerz.encryptor.PasswordStore;
+import java.util.Iterator;
 
 public class DetailPage extends BasePage {
-    private PasswordStore passStr;
+    PasswordStore passStr;
+    SelectInput actionSelect;
 
-    public DetailPage(int width) {
-        super("Detail Page", width);
+    public DetailPage(int width, PasswordStore passStr) {
+        super("AKUN: " + passStr.name, width);
+        this.passStr = passStr;
+
+        this.components.add(new Label("Kategori     : " + passStr.getCategory(), this.width));
+        this.components.add(new Label("Username     : " + passStr.username, this.width));
+        this.components.add(new Label("Password     : " + passStr.getPassword(), this.width));
+        this.components.add(new Label("Encrypt      : " + passStr.getEncPassword(), this.width));
+        this.components.add(new Label("Score        : " + passStr.getScore(), this.width));
+
+        this.components.add(new Space(this.width));
+        this.components.add(new HLine(this.width));
+        this.components.add(new Space(this.width));
+
+        String[] action = { "Hapus Password", "Kembali ke List Password", "Kembali ke Halaman Utama" };
+        this.actionSelect = new SelectInput("Pilih aksi", action, this.width);
+        this.components.add(this.actionSelect);
     }
 
     @Override
     public void drawContent() {
-        new Space(this.width).draw();
-        new HLine(this.width).draw();
+        Iterator loop = this.components.iterator();
 
-        new Space(this.width).draw();
-        new Label("Terdapat " + DataPassword.passData.size() + " tersimpan", this.width).draw();
-        new Label("----- ----- -----", this.width);
-        for (PasswordStore ps : DataPassword.passData) {
-            try {
-                new Label(String.format("| %-15s | %-15s | %-15s | %-15s | %-15s", ps.name, ps.username,
-                        ps.getCategory(), ps.getPassword(), ps.getScore()), this.width)
-                        .draw();
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+        while (loop.hasNext()) {
+            Component widget = (Component) loop.next();
+            widget.draw();
         }
-        new Space(this.width).draw();
-        new HLine(this.width).draw();
-        new MainPage(this.width).draw();
+
+        int select = this.actionSelect.getValue();
+        switch (select) {
+            case 1:
+                Iterator<PasswordStore> iterator = DataPassword.passData.iterator();
+
+                while (iterator.hasNext()) {
+                    PasswordStore pass = iterator.next();
+                    if (pass.username.equals(passStr.username)) {
+                        iterator.remove();
+                    }
+                }
+
+                DataPassword.saveCSVData();
+
+                new ListPasswordPage(this.width).draw();
+                break;
+            case 2:
+                new ListPasswordPage(this.width).draw();
+                break;
+            case 3:
+                new MainPage(this.width).draw();
+                break;
+            default:
+                new DetailPage(this.width, this.passStr).draw();
+        }
+
+        drawFooter();
     }
 }

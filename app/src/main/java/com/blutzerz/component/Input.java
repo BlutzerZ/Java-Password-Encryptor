@@ -3,16 +3,18 @@ package com.blutzerz.component;
 import java.util.Scanner;
 
 public class Input implements Component {
-    String label;
-    Scanner input = new Scanner(System.in);
-    String value;
+    protected String label;
+    private Scanner input;
+    private String value;
 
     public Input(String label) {
         this.label = label;
+        this.input = new Scanner(System.in);
     }
 
+    @Override
     public void draw() {
-        System.out.print("|  " + label + " :");
+        System.out.print("|  " + this.label + " : ");
         this.value = this.input.nextLine();
     }
 
@@ -22,7 +24,6 @@ public class Input implements Component {
 
     public int getValueInt() {
         return Integer.parseInt(this.value);
-
     }
 
     public double getValueDouble() {

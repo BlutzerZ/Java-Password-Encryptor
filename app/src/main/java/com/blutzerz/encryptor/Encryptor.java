@@ -23,10 +23,12 @@ public class Encryptor {
         byte[] decodedKey = Base64.getDecoder().decode(key);
         SecretKey originalKey = new SecretKeySpec(decodedKey, 0,
                 decodedKey.length, algorithm);
+
         Cipher cipher = Cipher.getInstance(transformation);
         cipher.init(Cipher.ENCRYPT_MODE, originalKey);
         byte[] encryptedBytes = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
         String encryptedText = Base64.getEncoder().encodeToString(encryptedBytes);
+
         return encryptedText;
     }
 
@@ -34,12 +36,15 @@ public class Encryptor {
         byte[] decodedKey = Base64.getDecoder().decode(key);
         SecretKey originalKey = new SecretKeySpec(decodedKey, 0,
                 decodedKey.length, algorithm);
+
         Cipher cipher = Cipher.getInstance(transformation);
         cipher.init(Cipher.DECRYPT_MODE, originalKey);
         byte[] encryptedBytes = Base64.getDecoder().decode(encodedText);
         byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+
         String decryptedText = new String(decryptedBytes,
                 StandardCharsets.UTF_8);
+
         return decryptedText;
     }
 }

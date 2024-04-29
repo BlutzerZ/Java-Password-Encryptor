@@ -13,27 +13,33 @@ public abstract class BasePage {
     protected HLine hline;
     protected Space space;
     protected Label label;
-    protected ArrayList<Component> components;
+    protected ArrayList<Component> components = new ArrayList<>();
 
     public BasePage(String title, int width) {
         this.title = title;
         this.width = width;
+        this.hline = new HLine(width);
+        this.space = new Space(width);
+        this.label = new Label(title.toUpperCase(), width);
     }
 
     public void draw() {
         this.drawHeader();
-        new Label("Input Password", this.width).draw();
-        this.drawFooter();
+        this.space.draw();
+        this.drawContent();
     }
 
     public void drawHeader() {
-        new HLine(this.width).draw();
-        new Space(this.width).draw();
+        this.hline.draw();
+        this.space.draw();
+        this.label.draw();
+        this.space.draw();
+        this.hline.draw();
     }
 
     public void drawFooter() {
-        new Space(this.width).draw();
-        new HLine(this.width).draw();
+        this.space.draw();
+        this.hline.draw();
     }
 
     public abstract void drawContent();

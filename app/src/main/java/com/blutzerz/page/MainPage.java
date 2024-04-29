@@ -1,8 +1,6 @@
 package com.blutzerz.page;
 
-import com.blutzerz.page.*;
-
-import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.blutzerz.component.*;
 import com.blutzerz.data.DataPassword;
@@ -12,23 +10,26 @@ public class MainPage extends BasePage {
 
     public MainPage(int width) {
         super("Aplikasi Penyimpanan Password", width);
-        this.components.add(new Label("Selamat datang di aplikasi Password Vault",
+        this.components.add(new Label("Selamat datang di Java Password Encryptor",
                 this.width));
         this.components.add(new Label("Simpan password anda dengan aman di sini",
                 this.width));
         this.components.add(new Space(this.width));
         String[] pages = { "Input Password", "Tampil Password", "Keluar Aplikasi" };
-        this.pageSelect = new SelectInput("Pilih halaman berikut:",
+        this.pageSelect = new SelectInput("Pilih:",
                 pages, this.width);
         this.components.add(pageSelect);
     }
 
     @Override
     public void drawContent() {
-        int select;
-        for (Component widget : this.components) {
+        Iterator loop = this.components.iterator();
+
+        while (loop.hasNext()) {
+            Component widget = (Component) loop.next();
             widget.draw();
         }
+        int select;
         select = this.pageSelect.getValue() - 1;
         switch (select) {
             case 0 -> {
